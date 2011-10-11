@@ -1,13 +1,8 @@
 
 
 
-
-
 // PLEASE SEE INSTALL/CONFIG INSTRUCTIONS:
 // http://getsharekit.com/install
-
-
-
 
 
 
@@ -39,17 +34,40 @@
 // Posterous - http://apidocs.posterous.com/
 #define SHKPosterousAPIKey			@""
 
+// LinkedIn -  http://developer.linkedin.com/
+// Please note that LinkedIn does enforce application throttling limits, 
+// Developer Login (app/secret keys) https://www.linkedin.com/secure/developer 
+//
+#define SHKLinkedInConsumerKey	@""
+#define SHKLinkedInSecretKey	@""
+
+
 // Delicious - https://developer.apps.yahoo.com/projects
 #define SHKDeliciousConsumerKey		@""
 #define SHKDeliciousSecretKey		@""
 
 // Facebook - http://www.facebook.com/developers
-// If SHKFacebookUseSessionProxy is enabled then SHKFacebookSecret is ignored and should be left blank
+// iOS SDK - https://github.com/facebook/facebook-ios-sdk
+/*
+ Important Facebook settings to get right:
+ 
+ URL Schemes
+ ---
+ You must create a URL scheme in your Info.plist that is in the format fb[app_id]. See the documentation on the iOS SDK under Authentication and Authorization for more details. This is to allow
+ the new Single Sign-on capabilities of the iOS SDK to callback to your application, should it use fast app switching to authenticate in the Facebook app or Safari.
+ 
+ Modify AppDelegate class
+ ---
+ You must implement the application:handleOpenURL: method in your AppDelegate class. In this method, call the handleOpenURL: method on the facebook property of an SHKFacebook instance.
+ 
+ For example:
+ - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+		SHKFacebook *facebookSharer = [[[SHKFacebook alloc] init] autorelease];
+		return [[facebookSharer facebook] handleOpenURL:url];
+ }
+ */
+#define SHKFacebookAppId			@""
 
-#define SHKFacebookUseSessionProxy  NO 
-#define SHKFacebookKey				@""
-#define SHKFacebookSecret			@""
-#define SHKFacebookSessionProxyURL  @""
 
 // Read It Later - http://readitlaterlist.com/api/?shk
 #define SHKReadItLaterKey			@""
@@ -76,9 +94,23 @@
 #define SHKTwitterUseXAuth			0 // To use xAuth, set to 1
 #define SHKTwitterUsername			@"" // Enter your app's twitter account if you'd like to ask the user to follow it when logging in. (Only for xAuth)
 
+// Evernote - http://www.evernote.com/about/developer/api/
+#define SHKEvernoteUserStoreURL		@""
+#define SHKEvernoteSecretKey		@""
+#define SHKEvernoteConsumerKey		@""
+#define SHKEvernoteNetStoreURLBase	@""
+
 // Bit.ly (for shortening URLs on Twitter) - http://bit.ly/account/register - after signup: http://bit.ly/a/your_api_key
 #define SHKBitLyLogin				@""
 #define SHKBitLyKey					@""
+
+
+// Evernote
+#define SHKEvernoteConsumerKey		@""
+#define SHKEvernoteSecretKey		@""
+#define SHKEvernoteUserStoreURL		@""
+#define SHKEvernoteNetStoreURLBase	@""
+
 
 // ShareMenu Ordering
 #define SHKShareMenuAlphabeticalOrder 1 // Setting this to 1 will show list in Alphabetical Order, setting to 0 will follow the order in SHKShares.plist
@@ -136,23 +168,21 @@
 /*
  Debugging
  ------
- To show debug output in the console:
- 1. uncomment section A below
- 2. comment out section B below
+ To show debug output in the console, setSHKDebugShowLogs to TRUE
+
+ The #if block that follows should be left alone unless modifying the behavior of enabling/disabling SHKLog
+
+*/
  
- To hide debug output in the console:
- 1. uncomment section B below
- 2. comment out section A below
- */
+#define SHKDebugShowLogs			(TRUE)
 
-// A : show debug output
-//#define SHKDebugShowLogs			1
-//#define SHKLog( s, ... ) NSLog( @"<%p %@:(%d)> %@", self, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
-
-// B : hide debug output
-#define SHKDebugShowLogs			0
+///////////////////////////////////////////
+#if(SHKDebugShowLogs)
+#define SHKLog( s, ... ) NSLog( @"<%p %@:(%d)> %@", self, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
+#else
 #define SHKLog( s, ... ) 
-
+#endif
+///////////////////////////////////////////
 
 
 /*
